@@ -55,11 +55,23 @@ namespace UI.TitleScene
         private void _ConfirmInputs()
         {
             if (!Regex.IsMatch(_emailId.GetInputText(), General.RexValues.EmailIdRex))
-            {}
+            {
+                confirmPanel.gameObject.SetActive(true);
+                confirmPanel.Init("이메일ID가 규격에 맞지 않습니다", 
+                    "확인",delegate { confirmPanel.gameObject.SetActive(false); });
+            }
             else if (!Regex.IsMatch(_password.GetInputText(), General.RexValues.PassWordRex))
-            {}
+            {
+                confirmPanel.gameObject.SetActive(true);
+                confirmPanel.Init("비밀번호가 규격에 맞지 않습니다", 
+                    "확인",delegate { confirmPanel.gameObject.SetActive(false); });
+            }
             else if (!Regex.IsMatch(_nickname.GetInputText(), General.RexValues.NickNameRex))
-            {}
+            {
+                confirmPanel.gameObject.SetActive(true);
+                confirmPanel.Init("닉네임이 규격에 맞지 않습니다", 
+                    "확인",delegate { confirmPanel.gameObject.SetActive(false); });
+            }
             else
             {
                 confirmPanel.gameObject.SetActive(true);

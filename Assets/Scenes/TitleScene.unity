@@ -612,6 +612,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1584506483}
     m_Modifications:
+    - target: {fileID: 8467297000009545932, guid: 845b31d96ed3dd04c820adf5e124075a, type: 3}
+      propertyPath: m_text
+      value: "\uB85C\uADF8\uC778"
+      objectReference: {fileID: 0}
     - target: {fileID: 8467297001084711888, guid: 845b31d96ed3dd04c820adf5e124075a, type: 3}
       propertyPath: m_Name
       value: ConfirmButton
@@ -654,7 +658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8467297001084711891, guid: 845b31d96ed3dd04c820adf5e124075a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 240
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 8467297001084711891, guid: 845b31d96ed3dd04c820adf5e124075a, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1454,6 +1458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85ebf2540d6b0348b1e3388568ca44b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  confirmPanel: {fileID: 129357208}
 --- !u!1001 &1706681308
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2096,6 +2101,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 910962037}
     m_Modifications:
+    - target: {fileID: 8467297000009545932, guid: 845b31d96ed3dd04c820adf5e124075a, type: 3}
+      propertyPath: m_text
+      value: "\uD68C\uC6D0\uAC00\uC785"
+      objectReference: {fileID: 0}
     - target: {fileID: 8467297001084711888, guid: 845b31d96ed3dd04c820adf5e124075a, type: 3}
       propertyPath: m_Name
       value: ConfirmButton
@@ -2138,7 +2147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8467297001084711891, guid: 845b31d96ed3dd04c820adf5e124075a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 240
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 8467297001084711891, guid: 845b31d96ed3dd04c820adf5e124075a, type: 3}
       propertyPath: m_SizeDelta.y

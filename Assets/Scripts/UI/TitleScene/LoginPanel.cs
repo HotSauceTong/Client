@@ -13,6 +13,8 @@ namespace UI.TitleScene
     {
         #region Private values
 
+        [SerializeField] private AnnouncePanel confirmPanel;
+        
         private TMP_Text _mainText;
         private InputArea _emailId;
         private InputArea _password;
@@ -49,9 +51,17 @@ namespace UI.TitleScene
         private void _ConfirmInputs()
         {
             if (!Regex.IsMatch(_emailId.GetInputText(),  General.RexValues.EmailIdRex))
-            {}
+            {
+                confirmPanel.gameObject.SetActive(true);
+                confirmPanel.Init("이메일ID가 규격에 맞지 않습니다", 
+                    "확인",delegate { confirmPanel.gameObject.SetActive(false); });
+            }
             else if (!Regex.IsMatch(_password.GetInputText(), General.RexValues.PassWordRex))
-            {}
+            {
+                confirmPanel.gameObject.SetActive(true);
+                confirmPanel.Init("비밀번호가 규격에 맞지 않습니다", 
+                    "확인",delegate { confirmPanel.gameObject.SetActive(false); });
+            }
             else
             {
                 Debug.Log("Success");
