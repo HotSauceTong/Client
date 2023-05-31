@@ -7,7 +7,7 @@ namespace Utils
     public static class JsonConverter
     {
         /// <summary>
-        /// convert string to JSON format
+        /// convert JSON format to string
         /// </summary>
         public static string ObjectToJson(object obj)
         {
@@ -15,7 +15,7 @@ namespace Utils
         }
 
         /// <summary>
-        /// convert JSON format to string
+        /// convert string to JSON format
         /// </summary>
         public static T JsonToObject<T>(string jsonData)
         {
