@@ -19,6 +19,7 @@ namespace Network
 
     #region Public Methods
 
+
     /// <summary>
     /// 웹서버에서 Json데이터를 받아오는 함수, 서버의 응답에 대한 처리도 실시한다
     /// </summary>
@@ -27,6 +28,7 @@ namespace Network
         _context.StartCoroutine(GetRequestCoroutine(url, callback));
     }
     
+
     /// <summary>
     /// 웹서버에 Json데이터를 보내는 함수, 서버의 응답에 대한 처리도 실시한다
     /// </summary>

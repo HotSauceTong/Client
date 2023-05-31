@@ -1,12 +1,16 @@
 
+using System;
 using System.Text.RegularExpressions;
 
 using UnityEngine;
 using UnityEngine.UI;
 
 using TMPro;
-using UI.PrefabScripts;
 
+using General;
+using Network;
+using UI.PrefabScripts;
+using Network.PacketStructure;
 
 namespace UI.TitleScene
 {
@@ -54,37 +58,62 @@ namespace UI.TitleScene
 
         private void _ConfirmInputs()
         {
-            if (!Regex.IsMatch(_emailId.GetInputText(), General.RexValues.EmailIdRex))
+            if (!Regex.IsMatch(_emailId.GetInputText(), RexValues.EmailIdRex))
             {
                 confirmPanel.gameObject.SetActive(true);
                 confirmPanel.Init("이메일ID가 규격에 맞지 않습니다", 
                     "확인",delegate { confirmPanel.gameObject.SetActive(false); });
             }
-            else if (!Regex.IsMatch(_password.GetInputText(), General.RexValues.PassWordRex))
+            else if (!Regex.IsMatch(_password.GetInputText(), RexValues.PassWordRex))
             {
-                confirmPanel.gameObject.SetActive(true);
                 confirmPanel.Init("비밀번호가 규격에 맞지 않습니다", 
                     "확인",delegate { confirmPanel.gameObject.SetActive(false); });
             }
-            else if (!Regex.IsMatch(_nickname.GetInputText(), General.RexValues.NickNameRex))
+            else if (!Regex.IsMatch(_nickname.GetInputText(), RexValues.NickNameRex))
             {
-                confirmPanel.gameObject.SetActive(true);
                 confirmPanel.Init("닉네임이 규격에 맞지 않습니다", 
                     "확인",delegate { confirmPanel.gameObject.SetActive(false); });
             }
             else
             {
-                confirmPanel.gameObject.SetActive(true);
                 confirmPanel.Init(_nickname.GetInputText() + "\n이 닉네임으로 하시겠습니까?", 
-                    "예",   delegate { _PostSignInRequest(); },
+                    "예", delegate { _PostSignInRequest(); },
                     "아니요", delegate { confirmPanel.gameObject.SetActive(false); });
             }
         }
 
         private void _PostSignInRequest()
         {
-            // TODO : send Request
-            Debug.Log("Success");
+            SignUpRequest request = new SignUpRequest(
+                _emailId.GetInputText(),
+                _nickname.GetInputText(),
+                _password.GetInputText(),
+                NetworkValues.ClientVersion );
+
+            NetworkModule.Instance.WebHandler.Post(NetworkValues.Url + "Regist", JsonUtility.ToJson(request), response =>
+            {
+                if (response != null)
+                {
+                    SignUpResponse res = JsonUtility.FromJson<SignUpResponse>(response);
+                    if (res.errorCode == 0)
+                    {
+                        confirmPanel.Init("회원가입에 성공했습니다.\n환영합니다, " + _nickname.GetInputText(), 
+                            "확인",delegate { confirmPanel.gameObject.SetActive(false); });
+                    }
+                    else
+                    {
+                        string errorName = Enum.GetName(typeof(ErrorCode), res.errorCode);
+                        
+                        confirmPanel.Init( "회원가입에 실패했습니다.\n\n" + errorName,
+                            "확인",delegate { confirmPanel.gameObject.SetActive(false); });
+                    }
+                }
+                else
+                {
+                    confirmPanel.Init( "서버가 응답하지 않습니다",
+                        "확인",delegate { confirmPanel.gameObject.SetActive(false); });
+                }
+            });
         }
 
         #endregion
