@@ -16,8 +16,8 @@ namespace UI.TitleScene
         [SerializeField] private AnnouncePanel confirmPanel;
         
         private TMP_Text _mainText;
-        private InputArea _emailId;
-        private InputArea _password;
+        private TextInputArea _emailId;
+        private TextInputArea _password;
         private Button _confirmButton;
 
         #endregion
@@ -27,8 +27,8 @@ namespace UI.TitleScene
         private void Awake()
         {
             _mainText = transform.GetChild(0).GetComponent<TMP_Text>();
-            _emailId = transform.GetChild(1).GetComponent<InputArea>();
-            _password = transform.GetChild(2).GetComponent<InputArea>();
+            _emailId = transform.GetChild(1).GetComponent<TextInputArea>();
+            _password = transform.GetChild(2).GetComponent<TextInputArea>();
             _confirmButton = transform.GetChild(3).GetComponent<Button>();
         }
 
