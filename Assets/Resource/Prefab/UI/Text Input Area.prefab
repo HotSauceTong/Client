@@ -304,7 +304,7 @@ GameObject:
   - component: {fileID: 7896194980607486752}
   - component: {fileID: 5514022766263539071}
   m_Layer: 5
-  m_Name: Input Area
+  m_Name: Text Input Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
