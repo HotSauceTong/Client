@@ -11,6 +11,7 @@ using UI.PrefabScripts;
 using General;
 using Network;
 using Network.PacketStructure;
+using UnityEngine.SceneManagement;
 
 namespace UI.TitleScene
 {
@@ -84,17 +85,17 @@ namespace UI.TitleScene
             {
                 if (response != null)
                 {
-                    RegistResponse res = JsonUtility.FromJson<RegistResponse>(response);
+                    LoginResponse res = JsonUtility.FromJson<LoginResponse>(response);
                     if (res.errorCode == 0)
                     {
-                        // TODO : 1.save token at GeneralValues, 2.send to MainScene
-                        Debug.Log("Success");
+                        PlayerPrefs.SetString("Token", res.token);
+                        SceneManager.LoadSceneAsync("MainScene");
                     }
                     else
                     {
                         string errorName = Enum.GetName(typeof(ErrorCode), res.errorCode);
                         
-                        confirmPanel.Init( "회원가입에 실패했습니다.\n\n" + errorName,
+                        confirmPanel.Init( "로그인에 실패했습니다.\n\n" + errorName,
                             "확인",delegate { confirmPanel.gameObject.SetActive(false); });
                     }
                 }
