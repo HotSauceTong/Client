@@ -89,6 +89,7 @@ namespace UI.TitleScene
                     if (res.errorCode == 0)
                     {
                         PlayerPrefs.SetString("Token", res.token);
+                        PlayerPrefs.SetString("EmailID", request.email);
                         SceneManager.LoadSceneAsync("MainScene");
                     }
                     else

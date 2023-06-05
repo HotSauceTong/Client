@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using PolyAndCode.UI;
-using UnityEngine.UI;
 
 /// <summary>
 /// Demo controller class for Recyclable Scroll Rect. 
@@ -25,8 +24,6 @@ public class RecyclableScrollerDemo : MonoBehaviour, IRecyclableScrollRectDataSo
     [SerializeField]
     private int _dataLength;
 
-    [SerializeField] private Scrollbar scrollbar;
-
     //Dummy data List
     private List<ContactInfo> _contactList = new List<ContactInfo>();
 
@@ -35,8 +32,6 @@ public class RecyclableScrollerDemo : MonoBehaviour, IRecyclableScrollRectDataSo
     {
         InitData();
         _recyclableScrollRect.DataSource = this;
-        _recyclableScrollRect.verticalScrollbar = scrollbar;
-        _recyclableScrollRect.scrollSensitivity *= 10;
     }
 
     //Initialising _contactList with dummy data 
