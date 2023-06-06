@@ -70,7 +70,7 @@ namespace UI.MainScene
                 }
                 else
                 {
-                    announcePanel.Init( "서버가 응답하지 않습니다",
+                    announcePanel.Init( "서버 연결에 실패했습니다",
                         "확인",delegate { announcePanel.gameObject.SetActive(false); });
                 }
             });
