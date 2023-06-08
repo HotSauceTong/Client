@@ -1815,11 +1815,15 @@ PrefabInstance:
     - target: {fileID: 4147519919052386433, guid: 28bcb936880d6a34eaaa98f3d55fb16a, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 909ef51c69cab0c4b8f91288c9cf53d4, type: 2}
+      objectReference: {fileID: 11400000, guid: 10f895e224388de4eb70a5b294bb73e2, type: 2}
     - target: {fileID: 4147519919052386433, guid: 28bcb936880d6a34eaaa98f3d55fb16a, type: 3}
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: -2139765929582706928, guid: 909ef51c69cab0c4b8f91288c9cf53d4, type: 2}
+    - target: {fileID: 4147519919052386433, guid: 28bcb936880d6a34eaaa98f3d55fb16a, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4147519919052386435, guid: 28bcb936880d6a34eaaa98f3d55fb16a, type: 3}
       propertyPath: m_Name
       value: Announce Text
