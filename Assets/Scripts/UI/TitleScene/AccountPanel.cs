@@ -45,7 +45,7 @@ namespace UI.TitleScene
             _emailId.Init("Email ID", TMP_InputField.ContentType.EmailAddress, TMP_InputField.CharacterValidation.EmailAddress, 255);
             _password.Init("Password", TMP_InputField.ContentType.Password, TMP_InputField.CharacterValidation.None, 12);
             _nickname.Init("Nickname", TMP_InputField.ContentType.Alphanumeric, TMP_InputField.CharacterValidation.None, 12);
-            _confirmButton.onClick.AddListener(_ConfirmInputs);
+            _confirmButton.onClick.AddListener(_CheckAndPostInputs);
         }
 
         #endregion
@@ -56,7 +56,7 @@ namespace UI.TitleScene
 
         #region Private Method
 
-        private void _ConfirmInputs()
+        private void _CheckAndPostInputs()
         {
             if (!Regex.IsMatch(_emailId.GetInputText(), RexValues.EmailIdRex))
             {
@@ -77,24 +77,24 @@ namespace UI.TitleScene
             else
             {
                 confirmPanel.Init(_nickname.GetInputText() + "\n이 닉네임으로 하시겠습니까?", 
-                    "예", delegate { _PostSignInRequest(); },
+                    "예", delegate { _PostRegistRequest(); },
                     "아니요", delegate { confirmPanel.gameObject.SetActive(false); });
             }
         }
 
-        private void _PostSignInRequest()
+        private void _PostRegistRequest()
         {
-            SignUpRequest request = new SignUpRequest(
-                _emailId.GetInputText(),
-                _nickname.GetInputText(),
-                _password.GetInputText(),
-                NetworkValues.ClientVersion );
+            RegistRequest request = new RegistRequest();
+            request.email = _emailId.GetInputText();
+            request.nickname = _nickname.GetInputText();
+            request.password = _password.GetInputText();
+            request.version = NetworkValues.ClientVersion;
 
             NetworkModule.Instance.WebHandler.Post(NetworkValues.Url + "Regist", JsonUtility.ToJson(request), response =>
             {
                 if (response != null)
                 {
-                    SignUpResponse res = JsonUtility.FromJson<SignUpResponse>(response);
+                    RegistResponse res = JsonUtility.FromJson<RegistResponse>(response);
                     if (res.errorCode == 0)
                     {
                         confirmPanel.Init("회원가입에 성공했습니다.\n환영합니다, " + _nickname.GetInputText(), 
