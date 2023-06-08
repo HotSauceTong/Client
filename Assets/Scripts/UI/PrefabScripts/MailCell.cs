@@ -12,9 +12,7 @@ namespace UI.PrefabScripts
     public class MailCell : MonoBehaviour, ICell
     {
         #region private Values
-
-        private int _index;
-        private bool _isOpened;
+        
         private MailListElement _data;
 
         [SerializeField] private Sprite notRead;
@@ -26,8 +24,8 @@ namespace UI.PrefabScripts
         [SerializeField] private TMP_Text expireDate;
         [SerializeField] private Image mailIcon;
         // TODO : 아이템 이미지 챙기기
-        // [SerializeField] private Image itemSprite;
-        // [SerializeField] private TMP_Text itemCount;
+        [SerializeField] private Image itemSprite;
+        [SerializeField] private TMP_Text itemCount;
 
         private MailDetail _detail;
 
@@ -35,51 +33,75 @@ namespace UI.PrefabScripts
 
         #region Public Method
 
-        public void Init(MailListElement data, int index)
+        /// <summary>
+        /// 메일리스트 요소값 초기화
+        /// </summary>
+        /// <param name="data">메일리스트 데이터</param>
+        public void InitData(MailListElement data, MailDetail detail)
         {
-            _index = index;
             _data = data;
-            mailTitle.text = _data.mailTitle;
-            sender.text = _data.sender;
+            _detail = detail;
             
-            if (_data.readDate > DateTime.Now)
-            {
-                mailIcon.sprite = notRead;
-                _isOpened = false;
-            }
-            else
-            {
-                mailIcon.sprite = alreadyRead;
-                _isOpened = true;
-            }
-            
-            expireDate.text = _CalculateRemainTime(_data.expirationDate);
-            
-            button.onClick.AddListener(OpenMail);
+            _InitUI();
+            _InitUIItem();
         }
 
         #endregion
 
         #region Mono Method
-
-        private void Awake()
-        {
-            _detail = GameObject.Find("DetailMail").GetComponent<MailDetail>();
-        }
+        
 
         #endregion
         
         #region Private Methods
 
+        private void _InitUI()
+        {
+            mailTitle.text = _data.mailTitle;
+            sender.text = _data.sender;
+            
+            if (_data.ReadDate > DateTime.Now)
+            {
+                mailIcon.sprite = notRead;
+            }
+            else
+            {
+                mailIcon.sprite = alreadyRead;
+            }
+            
+            expireDate.text = _CalculateRemainTime(_data.ExpirationDate);
+        }
+
+        private void _InitUIItem()
+        {
+            button.onClick.AddListener(OpenMail);
+            itemSprite.sprite = Resources.Load<Sprite>("Texture/Item/" + _data.collectionCode);
+            itemCount.text = _data.collectionCount == -1 ? "" : _data.collectionCount.ToString();
+        }
+        private void _InitUIItemAsNone()
+        {
+            _data.collectionCode = -1;
+            _data.collectionCount = -1;
+            itemSprite.sprite = Resources.Load<Sprite>("Texture/Item/" + _data.collectionCode);
+            itemCount.text = "";
+        }
+        
+        /// <summary>
+        /// 상세 메일을 오픈하는 함수.
+        /// </summary>
         private void OpenMail()
         {
             Debug.Log("Request detailed Email");
             // TODO : 리퀘스트 보내고 응답이 정상적으로 됬으면 해당 메일 읽음처리
-            
-            _detail.InitMail(_data.mailId, _isOpened);
+            _detail.InitMail(_data.mailId, () => _InitUIItemAsNone());
             _detail.gameObject.SetActive(true);
         }
         
+        /// <summary>
+        /// 현재 시간과 대비하여 남는 시간을 string형식으로 반환하는 함수
+        /// </summary>
+        /// <param name="expire">계산할 시간</param>
+        /// <returns>남은 시간 문자열</returns>
         private string _CalculateRemainTime(DateTime expire)
         {
             TimeSpan remainingTime = expire - DateTime.Now;

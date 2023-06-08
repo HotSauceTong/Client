@@ -1,25 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Network.PacketStructure
 {
     /// <summary>
     /// 메일 리스트용 클래스
     /// </summary>
+    [Serializable]
     public class MailListElement
     {
         public Int64 mailId;
         public Int64 collectionCode;
         public int collectionCount;
         public string mailTitle;
-        public String sender;
-        public DateTime readDate;
-        public DateTime expirationDate;
+        public string sender;
+        [SerializeField] private string readDate;
+        [SerializeField] private string expirationDate;
+
+        public DateTime ReadDate => DateTime.Parse(readDate);
+        public DateTime ExpirationDate => DateTime.Parse(expirationDate);
     }
 
     /// <summary>
     /// 메일 세부내용 클래스
     /// </summary>
+    [Serializable]
     public class Mail
     {
         public Int64 mailId;
@@ -27,10 +33,14 @@ namespace Network.PacketStructure
         public int collectionCount;
         public string mailTitle;
         public string mailBody;
-        public String sender;
-        public DateTime readDate;
-        public DateTime receiveDate;
-        public DateTime expirationDate;
+        public string sender;
+        [SerializeField] private string readDate;
+        [SerializeField] private string receiveDate;
+        [SerializeField] private string expirationDate;
+        
+        public DateTime ReadDate => DateTime.Parse(readDate);
+        public DateTime ReceiveDate => DateTime.Parse(receiveDate);
+        public DateTime ExpirationDate => DateTime.Parse(expirationDate);
     }
 
     /// <summary>
@@ -53,6 +63,7 @@ namespace Network.PacketStructure
     public class MailListResponse : BaseResponse
     {
         public List<MailListElement> mailList;
+        
     }
 
     /// <summary>

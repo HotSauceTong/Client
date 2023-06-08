@@ -20,10 +20,13 @@ namespace UI.MainScene
         #endregion
 
         #region Private Values
-        
-        [SerializeField] private AnnouncePanel announcePanel;
 
+        [SerializeField] private AnnouncePanel announcePanel;
+        
         [SerializeField] private RecyclableScrollRect scroll;
+        [SerializeField] private Transform content;
+        [SerializeField] private GameObject mailCell;
+        [SerializeField] private MailDetail detail;
 
         private List<MailListElement> _mailList;
 
@@ -36,7 +39,9 @@ namespace UI.MainScene
         /// </summary>
         public int GetItemCount()
         {
-            return _mailList.Count;
+            if (_mailList != null)
+                return _mailList.Count;
+            return 0;
         }
 
         /// <summary>
@@ -49,7 +54,18 @@ namespace UI.MainScene
             var item = cell as MailCell;
             if (item)
             {
-                item.Init(_mailList[index], index);
+                item.InitData(_mailList[index], detail);
+            }
+        }
+
+        public void RequestDeleteMail()
+        {
+            foreach (var mail in _mailList)
+            {
+                if (mail.ReadDate < DateTime.Now)
+                {
+                    _GetMailListData("Mail/DeleteAllRecvedMails");
+                }
             }
         }
 
@@ -64,28 +80,33 @@ namespace UI.MainScene
 
         private void OnEnable()
         {
-            _GetMailListData();
+            _GetMailListData("Mail/MailList");
+            scroll.ReloadData();
         }
 
         #endregion
 
         #region Private Methods
 
-        private void _GetMailListData()
+        /// <summary>
+        /// 서버에서 메일 리스트 가져오기
+        /// </summary>
+        private void _GetMailListData(string urlPath)
         {
             MailListRequest req = new MailListRequest();
             req.token = PlayerPrefs.GetString("Token");
             req.email = PlayerPrefs.GetString("EmailID");
             req.version = NetworkValues.ClientVersion;
             
-            NetworkModule.Instance.WebHandler.Post(NetworkValues.Url + "MailList", JsonUtility.ToJson(req), response =>
+            NetworkModule.Instance.WebHandler.Post(NetworkValues.Url + urlPath, JsonUtility.ToJson(req), response =>
             {
                 if (response != null)
                 {
                     MailListResponse res = JsonUtility.FromJson<MailListResponse>(response);
                     if (res.errorCode == 0)
                     {
-                        _mailList = res.mailList;
+                        _mailList = new List<MailListElement>(res.mailList);
+                        UpdateMailCell();
                     }
                     else
                     {
@@ -103,7 +124,25 @@ namespace UI.MainScene
                 }
             });
         }
-        
+
+        /// <summary>
+        /// 받아온 데이터를 바탕으로 메일셀 재생성
+        /// 추후 무한 스크롤 등 사용 필요
+        /// </summary>
+        private void UpdateMailCell()
+        {
+            foreach (Transform child in content)
+            {
+                Destroy(child.gameObject);
+            }
+
+            foreach (var mail in _mailList)
+            {
+                GameObject mailCellInstance = Instantiate(mailCell, content);
+                mailCellInstance.GetComponent<MailCell>().InitData(mail, detail);
+            }
+        }
+
         #endregion
     }
 }
