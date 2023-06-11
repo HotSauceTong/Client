@@ -7,7 +7,7 @@ namespace Network
     {
         #region Public values
 
-        public static NetworkModule Instance;
+        public static NetworkModule Instance { get; private set; }
 
         public WebHandler WebHandler;
         

@@ -35,5 +35,6 @@ namespace Network
         
         //Attendance Error 500 ~ 599
         AlreadyAttendance = 501,
+        MaxRewardStackReached = 502,
     }
 }

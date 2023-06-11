@@ -60,13 +60,7 @@ namespace UI.MainScene
 
         public void RequestDeleteMail()
         {
-            foreach (var mail in _mailList)
-            {
-                if (mail.ReadDate < DateTime.Now)
-                {
-                    _GetMailListData("Mail/DeleteAllRecvedMails");
-                }
-            }
+            _GetMailListData("Mail/DeleteAllRecvedMails");
         }
 
         #endregion
@@ -94,10 +88,8 @@ namespace UI.MainScene
         private void _GetMailListData(string urlPath)
         {
             MailListRequest req = new MailListRequest();
-            req.token = PlayerPrefs.GetString("Token");
-            req.email = PlayerPrefs.GetString("EmailID");
-            req.version = NetworkValues.ClientVersion;
-            
+            req.InitBase();
+
             NetworkModule.Instance.WebHandler.Post(NetworkValues.Url + urlPath, JsonUtility.ToJson(req), response =>
             {
                 if (response != null)
@@ -110,11 +102,9 @@ namespace UI.MainScene
                     }
                     else
                     {
-                        {
-                            string errorName = Enum.GetName(typeof(ErrorCode), res.errorCode);
-                            announcePanel.Init("이메일 리스트 로딩에 실패했습니다.\n\n" + errorName,
-                                "확인", delegate { announcePanel.gameObject.SetActive(false); });
-                        }
+                        string errorName = Enum.GetName(typeof(ErrorCode), res.errorCode);
+                        announcePanel.Init("이메일 리스트 로딩에 실패했습니다.\n\n" + errorName,
+                            "확인", delegate { announcePanel.gameObject.SetActive(false); });
                     }
                 }
                 else

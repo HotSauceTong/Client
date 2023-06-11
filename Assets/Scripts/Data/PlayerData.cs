@@ -1,24 +1,28 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 using General;
 using Network;
+using Network.PacketStructure;
+using UI.PrefabScripts;
 
 namespace Data
 {
-    public struct PData
+    public enum CollectionCode : long
     {
-        public int Coin;
-        public int Dust;
+        Dust = 0,
+        Coin = 1,
     }
-    
     
     public class PlayerData : MonoBehaviour
     {
         #region Private values
 
-        private PData _pdata;
+        // [SerializeField] private AnnouncePanel announce;
+        
+        private List<CollectionBundle> _collection;
 
         [SerializeField] private UnityEvent<int> onCoinChanged;
         [SerializeField] private UnityEvent<int> onDustChanged;
@@ -27,40 +31,39 @@ namespace Data
 
         #region Public Values
 
+        public static PlayerData Instance { get; private set; }
+        
         public int Coin
         {
-            set
-            {
-                _pdata.Coin = value;
-                onCoinChanged.Invoke(value);
-            }
-            get => _pdata.Coin;
+            set => onCoinChanged?.Invoke(value);
+            get => _collection[_FindDataIndex(CollectionCode.Coin)].collectionCount;
         }
 
         public int Dust
         {
-            set
-            {
-                _pdata.Dust = value;
-                onDustChanged.Invoke(value);
-            }
-            get => _pdata.Dust;
+            set => onDustChanged?.Invoke(value);
+            get => _collection[_FindDataIndex(CollectionCode.Dust)].collectionCount;
         }
 
         #endregion
 
         #region Public Methods
 
-        public PData GetData()
+
+        /// <summary>
+        /// 재화 리스트들을 Set하는 함수
+        /// </summary>
+        public void SetData(List<CollectionBundle> col)
         {
-            return _pdata;
+            _collection = col;
+            Coin = _collection[_FindDataIndex(CollectionCode.Coin)].collectionCount;
+            Dust = _collection[_FindDataIndex(CollectionCode.Dust)].collectionCount;
         }
 
-        public void SetData(PData data)
-        {
-            _pdata = data;
-        }
-
+        /// <summary>
+        /// 미완성(필요한가?)
+        /// 모든 데이터를 서버에서 불러오는 함수
+        /// </summary>
         public void LoadDataFromServer()
         {
             NetworkModule.Instance.WebHandler.Get(NetworkValues.Url + "", response =>
@@ -81,14 +84,36 @@ namespace Data
         }
         
         #endregion
-        
+
+        #region Mono Methods
+
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+                Destroy(this.gameObject);
+            else
+            {
+                Instance = this;
+                DontDestroyOnLoad(Instance);
+            }
+        }
+
+        #endregion
         
         #region Private Methods
 
-        // private void Awake()
-        // {
-        //
-        // }
+        private int _FindDataIndex(CollectionCode code)
+        {
+            for (int i = 0; i < _collection.Count; i++)
+            {
+                if (_collection[i].collectionCode == (long)code)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
         
         #endregion
     }
