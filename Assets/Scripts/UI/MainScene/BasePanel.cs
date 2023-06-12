@@ -1,6 +1,7 @@
 
 using System;
 using System.Globalization;
+using Data;
 using General;
 using Network;
 using Network.PacketStructure;
@@ -35,12 +36,48 @@ namespace UI.MainScene
 
         private void Awake()
         {
-            //if (_FirstOfDay())
             _PostAttendanceReq();
+        }
+
+        private void OnEnable()
+        {
+            _PostCollectionReq();
         }
 
         #endregion
 
+        /// <summary>
+        /// 서버에서 재화 종류와 양을 받아오는 함수
+        /// </summary>
+        private void _PostCollectionReq()
+        {
+            CurrencyListUpRequest req = new CurrencyListUpRequest();
+            req.InitBase();
+
+            NetworkModule.Instance.WebHandler.Post(NetworkValues.Url + "Collection/CurrencyListUp", JsonUtility.ToJson(req), response =>
+            {
+                if (response != null)
+                {
+                    CurrencyListUpResponse res = JsonUtility.FromJson<CurrencyListUpResponse>(response);
+                    if (res.errorCode == 0)
+                    {
+                        PlayerData.Instance.SetData(res.currencyList);
+                    }
+                    else
+                    {
+                        string errorName = Enum.GetName(typeof(ErrorCode), res.errorCode);
+                        announcePanel.Init("출석보상 획득에 실패했습니다.\n\n" + errorName,
+                            "확인", delegate { announcePanel.gameObject.SetActive(false); });
+                    }
+                }
+                else
+                {
+                    announcePanel.Init( "서버 연결에 실패했습니다",
+                        "확인",delegate { announcePanel.gameObject.SetActive(false); });
+                }
+            });
+        }
+        
         /// <summary>
         /// 서버에 일일보상 요청을 보내는 함수
         /// 마지막으로 로그인한 시간, 일일보상 스택값을 받아온다
@@ -48,9 +85,7 @@ namespace UI.MainScene
         private void _PostAttendanceReq()
         {
             AttendanceRequest req = new AttendanceRequest();
-            req.token = PlayerPrefs.GetString("Token");
-            req.email = PlayerPrefs.GetString("EmailID");
-            req.version = NetworkValues.ClientVersion;
+            req.InitBase();
             
             NetworkModule.Instance.WebHandler.Post(NetworkValues.Url + "Attendance", JsonUtility.ToJson(req), response =>
             {
@@ -74,24 +109,6 @@ namespace UI.MainScene
                         "확인",delegate { announcePanel.gameObject.SetActive(false); });
                 }
             });
-        }
-
-        /// <summary>
-        /// 오늘이 갱신되었는지 확인하는 함수
-        /// 현재 시간이 이전에 로그인한 시간 이후로 오전 6시가 지났다면 true를, 아니면 false 반환
-        /// </summary>
-        private bool _FirstOfDay()
-        {
-            DateTime now = DateTime.Now;
-            DateTime resetTime = new DateTime(now.Year, now.Month, now.Day, 6, 0, 0);
-            
-            DateTime lastLogin;
-            if (DateTime.TryParse(PlayerPrefs.GetString("LastLogin"), out lastLogin))
-            {
-                return now >= resetTime && now >= lastLogin;
-            }
-
-            return false;
         }
     }
 }

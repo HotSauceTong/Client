@@ -35,8 +35,12 @@ namespace UI.PrefabScripts
         /// </summary>
         public void InitValue(string value)
         {
-            // TODO : Get data from PlayerData, PlayerData will use UnityEvent
             _valueText.text = value;
+        }
+        
+        public void InitValue(int value)
+        {
+            _valueText.text = value.ToString();
         }
 
         #endregion

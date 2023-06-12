@@ -90,9 +90,7 @@ namespace UI.MainScene
         private void _RequestDetailMail()
         {
             MailReadRequest req = new MailReadRequest();
-            req.token = PlayerPrefs.GetString("Token");
-            req.email = PlayerPrefs.GetString("EmailID");
-            req.version = NetworkValues.ClientVersion;
+            req.InitBase();
             req.mailId = _mailID;
             
             NetworkModule.Instance.WebHandler.Post(NetworkValues.Url + "Mail/MailRead", JsonUtility.ToJson(req), response =>
@@ -127,10 +125,9 @@ namespace UI.MainScene
         private void _RequestMailItemReceive()
         {
             MailItemReceiveRequest req = new  MailItemReceiveRequest();
-            req.token = PlayerPrefs.GetString("Token");
-            req.email = PlayerPrefs.GetString("EmailID");
-            req.version = NetworkValues.ClientVersion;
+            req.InitBase();
             req.mailId = _mailID;
+            
             NetworkModule.Instance.WebHandler.Post(NetworkValues.Url + "Mail/MailItemReceive", JsonUtility.ToJson(req), response =>
             {
                 if (response != null)

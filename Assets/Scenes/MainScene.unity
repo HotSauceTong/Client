@@ -3921,6 +3921,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5151832523881164535, guid: da8fbe45511a3994a807a6924aaa543f, type: 3}
   m_PrefabInstance: {fileID: 1682467689}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1682467691 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8182393144262674222, guid: da8fbe45511a3994a807a6924aaa543f, type: 3}
+  m_PrefabInstance: {fileID: 1682467689}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc9c1932a66ed6e43ba776baeb466f94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1700789308
 GameObject:
   m_ObjectHideFlags: 0
@@ -4902,10 +4913,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onCoinChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5151832524074327032}
+        m_TargetAssemblyTypeName: UI.PrefabScripts.ImageTextArea, Assembly-CSharp
+        m_MethodName: InitValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onDustChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1682467691}
+        m_TargetAssemblyTypeName: UI.PrefabScripts.ImageTextArea, Assembly-CSharp
+        m_MethodName: InitValue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1870632093
 GameObject:
   m_ObjectHideFlags: 0
@@ -5760,3 +5795,14 @@ PrefabInstance:
       objectReference: {fileID: 2800000, guid: 9f4814e7d5f7e5f4ba1ef14413b2e1ca, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da8fbe45511a3994a807a6924aaa543f, type: 3}
+--- !u!114 &5151832524074327032 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8182393144262674222, guid: da8fbe45511a3994a807a6924aaa543f, type: 3}
+  m_PrefabInstance: {fileID: 5151832524074327031}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc9c1932a66ed6e43ba776baeb466f94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

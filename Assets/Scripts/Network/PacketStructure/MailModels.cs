@@ -46,10 +46,11 @@ namespace Network.PacketStructure
     /// <summary>
     /// 메일에 첨부되는 아이템의 코드와 개수
     /// </summary>
+    [Serializable]
     public class CollectionBundle
     {
-        public Int64 collectionCode;
-        public Int32 collectionCount;
+        [SerializeField] public Int64 collectionCode;
+        [SerializeField] public Int32 collectionCount;
     }
 
 
